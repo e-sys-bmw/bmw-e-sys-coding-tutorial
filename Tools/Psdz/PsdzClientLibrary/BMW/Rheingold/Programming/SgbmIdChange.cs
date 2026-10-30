@@ -1,0 +1,58 @@
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
+using BMW.Rheingold.CoreFramework.Contracts.Programming;
+
+namespace BMW.Rheingold.Programming
+{
+    public class SgbmIdChange : ISgbmIdChange, INotifyPropertyChanged
+    {
+        [DataMember]
+        private string actual;
+        [DataMember]
+        private string target;
+        public string Actual
+        {
+            get
+            {
+                return actual;
+            }
+
+            set
+            {
+                actual = value;
+                OnPropertyChanged("Actual");
+            }
+        }
+
+        public string Target
+        {
+            get
+            {
+                return target;
+            }
+
+            set
+            {
+                target = value;
+                OnPropertyChanged("Target");
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public SgbmIdChange()
+        {
+        }
+
+        public SgbmIdChange(string actual, string target)
+        {
+            Actual = actual;
+            Target = target;
+        }
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+}

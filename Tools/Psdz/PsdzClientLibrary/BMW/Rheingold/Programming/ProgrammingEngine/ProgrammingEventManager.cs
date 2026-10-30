@@ -1,0 +1,36 @@
+﻿using System;
+using BMW.Rheingold.CoreFramework.Contracts.Programming;
+using BMW.Rheingold.CoreFramework.Contracts.Vehicle;
+using BMW.Rheingold.CoreFramework.DatabaseProvider;
+using BMW.Rheingold.Programming.ProgrammingEngine.Events;
+
+namespace BMW.Rheingold.Programming.ProgrammingEngine
+{
+    internal class ProgrammingEventManager : IProgrammingEventManager
+    {
+        public event EventHandler<ProgrammingEventArgs> ProgrammingEventRaised;
+        internal void OnCurrentEcuChanged(IEcuProgrammingInfo ecu)
+        {
+            if (ProgrammingEventRaised != null)
+            {
+                ProgrammingEventRaised(this, new ProgrammingCurrentEcuChangedEventArgs(DateTime.Now, ecu));
+            }
+        }
+
+        internal void OnProgrammingActionStateChanged(IEcu ecu, ProgrammingActionType programmingActionType, ProgrammingActionState programmingActionState)
+        {
+            if (ProgrammingEventRaised != null)
+            {
+                ProgrammingEventRaised(this, new ProgrammingActionStateChangedEventArgs(DateTime.Now, ecu, programmingActionType, programmingActionState));
+            }
+        }
+
+        internal void OnProgressChanged(string taskName, double progress, double timeLeftSec, bool isTaskFinished)
+        {
+            if (ProgrammingEventRaised != null)
+            {
+                ProgrammingEventRaised(this, new ProgrammingTaskEventArgs(DateTime.Now, taskName, progress, timeLeftSec, isTaskFinished));
+            }
+        }
+    }
+}
